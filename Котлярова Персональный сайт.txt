@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моё портфолио</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .hero-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        body.dark-theme {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        .header {
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+        }
+
+        .nav a {
+            margin-left: 1rem;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .page {
+            display: none;
+            padding: 2rem 0;
+        }
+        .page.active {
+            display: block;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: #f8f9fa;
+        }
+        body.dark-theme .hero {
+            background: #2c2c2c;
+        }
+
+        .cta-button {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .card-desc {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, margin 0.2s ease, padding 0.2s ease;
+            background-color: rgba(0,0,0,0.03);
+            border-radius: 8px;
+            margin-top: 0;
+            padding: 0 1rem;
+            text-align: left;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .card-desc.show {
+            max-height: 500px;
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+        }
+        .card-desc a {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+            word-break: break-word;
+        }
+        .card-desc a:hover {
+            background-color: #0056b3;
+        }
+        body.dark-theme .card-desc a {
+            background-color: #3a86ff;
+        }
+        body.dark-theme .card-desc a:hover {
+            background-color: #2666cc;
+        }
+        body.dark-theme .card,
+        body.dark-theme .post {
+            background: #2d2d2d;
+            border-color: #444;
+        }
+        body.dark-theme .card-desc {
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .blog-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .post {
+            padding: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        body.dark-theme .contact-form input,
+        body.dark-theme .contact-form textarea {
+            background: #2d2d2d;
+            color: #e0e0e0;
+            border-color: #555;
+        }
+
+        .footer {
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+
+        .social a {
+            margin: 0 0.5rem;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .header .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .nav a {
+                margin: 0 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">Моё Портфолио</h1>
+            <nav class="nav">
+                <a href="#" data-page="home">Главная</a>
+                <a href="#" data-page="about">Обо мне</a>
+                <a href="#" data-page="hobbies">Увлечения</a>
+                <a href="#" data-page="blog">Блог</a>
+                <a href="#" data-page="contact">Контакты</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </div>
+    </header>
+
+    <main class="main">
+        <section id="home" class="page active">
+            <div class="hero">
+                <div class="container" style="text-align: center;">
+                    <img src="d54b225a-47a7-4573-af4f-64c677ab127a.jpg" alt="Моё фото" class="hero-image">
+                    <h2>Привет, я — Алисия</h2>
+                    <p>Умница, красавица, доброволец, спортсменка!</p>
+                    <button class="cta-button" data-page="contact">Связаться со мной</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="page">
+            <div class="container">
+                <h3>Обо мне</h3>
+                <div class="about-content">
+                    <div class="icon">👨‍💻</div>
+                    <p>Увлекаюсь учебой, профессионально занимаюсь плаванием и люблю творить прозу</p>
+                    <p>Имею первый спортивный разряд, мечтаю о КМС. Учу английский и увлекаюсь программированием. В свободное время рисую и сочиняю. Очень люблю читать. Играю на фортепиано</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="hobbies" class="page">
+            <div class="container">
+                <h3>Мои увлечения</h3>
+                <div class="cards">
+                    <div class="card" data-hobby="travel">
+                        📸 Путешествия
+                        <div class="card-desc">
+                            Обожаю открывать новые города и страны. Вот список стран, где я уже побывала: Сербия, Турция, ОАЭ, Кипр, Мальдивы, Армения, Китай, Филиппины, Египет. Мечтаю посетить Японию и Новую Зеландию.
+                        </div>
+                    </div>
+                    <div class="card" data-hobby="volunteer">
+                        📚 Добровольческая деятельность
+                        <div class="card-desc">
+                            С недавних пор благодаря моей подруге Марии занимаюсь добровольческой деятельностью. Посетила много мероприятий в этом статусе!<br>
+                            <a href="https://dobro.ru/volunteers/97218166/about" target="_blank" rel="noopener noreferrer">Мой профиль на DOBRO.RU</a>
+                        </div>
+                    </div>
+                    <div class="card" data-hobby="sport">
+                        🏋️ Спорт
+                        <div class="card-desc">
+                            Профессионально занимаюсь плаванием (1 разряд), также люблю бег.<br>
+                            <a href="https://sportcubes.ru/idswim151680" target="_blank" rel="noopener noreferrer">Мои спортивные достижения</a>
+                        </div>
+                    </div>
+                    <div class="card" data-hobby="creative">
+                        ✍️ Творчество
+                        <div class="card-desc">
+                            Рисую акварелью. Чаще всего – пейзажи и портреты. Это помогает выражать эмоции. Но еще больше люблю сочинять.<br>
+                            <a href="https://www.glagolitsa-rt.ru/works/vremya-voobrazhaemyh-zhelanij/" target="_blank" rel="noopener noreferrer">Моя публикация в «Глаголице»</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog" class="page">
+            <div class="container">
+                <h3>Мой блог</h3>
+                <div class="blog-posts">
+                    <article class="post">
+                        <h4>Пост 1: Плавание и биология</h4>
+                        <p>Зачем пловцу учить биологию? - спросите вы. Я точно знаю ответ!</p>
+                    </article>
+                    <article class="post">
+                        <h4>Пост 2: Английский или китайский?</h4>
+                        <p>Большинство учащихся сегодня задаются вопросом, что выгоднее учить: английский или китайский? А вы знаете, что ИИ предпочитает РУССКИЙ?</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="page">
+            <div class="container">
+                <h3>Обратная связь</h3>
+                <form id="contact-form" class="contact-form">
+                    <input type="email" id="email" placeholder="Ваша почта" required>
+                    <input type="tel" id="phone" placeholder="Телефон">
+                    <textarea id="message" placeholder="Сообщение" required></textarea>
+                    <button type="submit">Отправить</button>
+                </form>
+                <p id="formMessage" style="text-align:center; margin-top:1rem;"></p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Моё портфолио. Все права защищены.</p>
+            <div class="social">
+                <a href="#">GitHub</a>
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            const activePage = document.getElementById(pageId);
+            if (activePage) {
+                activePage.classList.add('active');
+            }
+            localStorage.setItem('currentPage', pageId);
+        }
+
+        document.querySelectorAll('[data-page]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.getAttribute('data-page');
+                if (pageId) showPage(pageId);
+            });
+        });
+
+        const savedPage = localStorage.getItem('currentPage');
+        if (savedPage && document.getElementById(savedPage)) {
+            showPage(savedPage);
+        } else {
+            showPage('home');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('darkTheme', isDark);
+            const themeBtn = document.getElementById('themeToggle');
+            themeBtn.textContent = isDark ? '☀️' : '🌙';
+        }
+
+        const savedTheme = localStorage.getItem('darkTheme');
+        if (savedTheme === 'true') {
+            document.body.classList.add('dark-theme');
+            document.getElementById('themeToggle').textContent = '☀️';
+        } else {
+            document.getElementById('themeToggle').textContent = '🌙';
+        }
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+        const form = document.getElementById('contact-form');
+        const formMessage = document.getElementById('formMessage');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            if (!email || !message) {
+                formMessage.textContent = 'Пожалуйста, заполните email и сообщение.';
+                formMessage.style.color = 'red';
+                return;
+            }
+
+            console.log('Отправлено:', { email, phone, message });
+            formMessage.textContent = 'Спасибо! Сообщение отправлено (демонстрация).';
+            formMessage.style.color = 'green';
+            form.reset();
+
+            setTimeout(() => {
+                formMessage.textContent = '';
+            }, 3000);
+        });
+
+        document.querySelector('.cta-button')?.addEventListener('click', (e) => {
+            if (!e.target.hasAttribute('data-page')) {
+                showPage('contact');
+            }
+        });
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A') return;
+                const desc = card.querySelector('.card-desc');
+                if (desc) {
+                    desc.classList.toggle('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
